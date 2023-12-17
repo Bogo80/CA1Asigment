@@ -21,7 +21,7 @@ namespace BP_UnitTest
         [DataRow(160, 95, BPCategory.High)]
         public void TestDataDrivenBloodPressure(int systolic, int diastolic, BPCategory expectedCategory)
         {
-            // Data-driven test for various blood pressure categories
+            // Data-driven test for blood pressure defined above 
             var bp = new BloodPressure { Systolic = systolic, Diastolic = diastolic };
             Assert.AreEqual(expectedCategory, bp.Category, $"Blood pressure with Systolic: {systolic}, Diastolic: {diastolic} should be categorized as {expectedCategory}");
         }
