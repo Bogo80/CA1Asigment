@@ -1,5 +1,4 @@
-name: Build Test Deploy BM_Calculator                                         # "BMI_CIBuild Test Deploy BM_Calculator" workflow, name is optional
-
+name: Build_Test_Deploy BP_Calculator                                        
 env:
   AZURE_WEBAPP_NAME: myBPcalcualator            # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: 'publish'              # set this to the path to your web app project
