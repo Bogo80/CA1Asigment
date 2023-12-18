@@ -1,13 +1,13 @@
-name: Build Test Deploy BM_Calculator                                         # "BMI_CI" workflow, name is optional
+name: Build Test Deploy BM_Calculator                                         # "BMI_CIBuild Test Deploy BM_Calculator" workflow, name is optional
 
 env:
   AZURE_WEBAPP_NAME: myBPcalcualator            # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: 'publish'              # set this to the path to your web app project
 
 on:
-# workflow_dispatch:        
- push:                                             #  workflow_dispatch for manually triggered
-   branches: [ master ]
+ workflow_dispatch:        
+# push:                                             #  workflow_dispatch for manually triggered
+#   branches: [ master ]
  
 permissions:
   id-token: write
