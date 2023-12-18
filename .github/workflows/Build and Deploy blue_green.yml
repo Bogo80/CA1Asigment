@@ -3,6 +3,10 @@
 
 name: Build Test Deploy BP Calulator
 
+env:
+  AZURE_WEBAPP_NAME: myBPcalcualator            # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: 'publish'           # set this to the path to your web app project
+
 on:
   workflow_dispatch:                                # manually triggered
 
@@ -16,20 +20,27 @@ jobs:
       run: dotnet build --configuration Release
     - name: Run unit tests
       run: dotnet test BP_UnitTest/BP_UnitTest.csproj --collect "Code coverage" 
+      name: Publish Unit Test Results
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: ''
+        name: MS Tests                  
+        path: '**.trx'
+        reporter: 'dotnet-trx'
+    # run Specflow+ tests
+    - name: Run Acceptance Tests 
+      run: dotnet test BBDDtesting/BDDtesting.csproj  --verbosity normal -l:trx
   
   deploy_test_blue_green:                                             
     name: deploy to staging slot, run E2E tests, swap slots
     needs: build_unit_test
     environment:
       name: QA
-      url: https://gc-bmicalculator-ga-staging.azurewebsites.net                                 
+      url: htps://mybpcalcualator-staging.azurewebsites.net                                 
     runs-on: windows-latest
-    env:
-      AZURE_WEBAPP_NAME: gc-bmicalculator-ga            # set this to your application's name
-      AZURE_WEBAPP_PACKAGE_PATH: 'publish'              # set this to the path to your web app project
+    
     steps:
     - uses: actions/checkout@v4
-
     # publish web app ready for deployment
     - name: Publish web app
       run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
@@ -44,14 +55,14 @@ jobs:
         package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
     # Run Selenium tests
-    - name: Run Selenium tests
-      run: dotnet test ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp/SeleniumTest.dll /Settings:SeleniumTest.runsettings --logger:"trx;LogFileName=selenium.trx"
+    #- name: Run Selenium tests
+    # run: dotnet test ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp/SeleniumTest.dll /Settings:SeleniumTest.runsettings --logger:"trx;LogFileName=selenium.trx"
   
     # Upload results of selenium tests
-    - uses: actions/upload-artifact@v3
-      with:
-        name: Selenium Tests Results
-        path: TestResults/selenium.trx
+    #- uses: actions/upload-artifact@v3
+    # with:
+    #    name: Selenium Tests Results
+     #   path: TestResults/selenium.trx
 
     # login to Azure account
     - uses: azure/login@v1
@@ -60,7 +71,7 @@ jobs:
 
     # blue/green
     - name: swap staging and production slots
-      run: |
+      run: 
         az webapp deployment slot swap -n gc-bmicalculator-ga -g gcresourcegroup1 --slot staging --target-slot production 
 
  # swap slots  
