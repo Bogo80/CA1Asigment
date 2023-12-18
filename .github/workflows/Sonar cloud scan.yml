@@ -14,7 +14,6 @@ jobs:
         with:
           projectBaseDir: 
           args: >
-            -dshost.url=https://sonarcloud.io/project/information?id=Bogo80_CA1Asigment
             -Dsonar.organization=bogo80
             -Dsonar.projectKey=Bogo80_CA1Asigment
             -Dsonar.python.coverage.reportPaths=coverage.xml
