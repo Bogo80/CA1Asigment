@@ -36,8 +36,8 @@ jobs:
         projectBaseDir: .
         args: >
 
-          -Dsonar.organization=Bogo80_CA1Asigment
-          -Dsonar.projectKey=bogo80
+          -Dsonar.organization=Bogo80
+          -Dsonar.projectKey=Bogo80_CA1Asigment
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.verbose=true
       env:
