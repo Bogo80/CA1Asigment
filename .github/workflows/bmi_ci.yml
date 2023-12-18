@@ -44,9 +44,9 @@ jobs:
         fetch-depth: 0  
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: 
-          args: >
+      with:
+        projectBaseDir: 
+         args: >
             -Dsonar.organization=bogo80
             -Dsonar.projectKey=Bogo80_CA1Asigment
             -Dsonar.python.coverage.reportPaths=coverage.xml
