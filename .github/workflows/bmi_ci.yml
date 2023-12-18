@@ -28,6 +28,22 @@ jobs:
       run: dotnet build --configuration Release
     - name: Run unit tests
       run: dotnet test BP_UnitTest/BP_UnitTest.csproj --no-restore --collect "Code coverage" -l:trx
+
+    # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=Bogo80_CA1Asigment)
+    - name: Analyze code with SonarCloud
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: .
+        args: >
+
+          -Dsonar.organization=Bogo80_CA1Asigment
+          -Dsonar.projectKey=bogo80
+          -Dsonar.python.coverage.reportPaths=coverage.xml
+          -Dsonar.verbose=true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
    
     - name: Publish Unit Test Results
       uses: dorny/test-reporter@v1
