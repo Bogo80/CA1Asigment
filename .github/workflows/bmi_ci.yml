@@ -10,7 +10,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ] 
-     
+
 permissions:
   id-token: write
   contents: read
@@ -41,8 +41,7 @@ jobs:
     - name: Run Acceptance Tests 
       run: dotnet test BDDtesting/BDDtesting.csproj  --verbosity normal -l:trx
     - name: sonar 
-      steps:
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0  
     - name: SonarCloud Scan
