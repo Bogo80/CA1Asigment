@@ -1,4 +1,4 @@
-name: Build_Test_Deploy_Blue/Green/approval 
+name: Build_Test_Deploy_Blue_Green_approval 
 
 env:
   AZURE_WEBAPP_NAME: myBPcalcualator
