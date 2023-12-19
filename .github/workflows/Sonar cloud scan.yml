@@ -1,0 +1,22 @@
+name: SonarCloud
+on:
+  workflow_dispatch:                             
+
+jobs:
+  scan_code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: 
+          args: >
+            -Dsonar.organization=bogo80
+            -Dsonar.projectKey=Bogo80_CA1Asigment
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

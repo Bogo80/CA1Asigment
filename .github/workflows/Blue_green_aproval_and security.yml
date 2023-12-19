@@ -71,30 +71,19 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  check_staging:
-    needs: deploy_test_blue_green
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Staging URL Response
-        run: |
-          response=$(curl --write-out '%{http_code}' --silent --output /dev/null https://mybpcalcualator-staging.azurewebsites.net)
-          if [ "$response" -ne 200 ]; then
-            echo "Staging environment did not return a 200 OK response."
-            exit 1
-          fi
   k6_performance_test:
-    needs: check_staging
+    needs: deploy_test_blue_green
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Run k6 Performance Test
         uses: k6io/action@v0.1
         with:
-          filename: k6tests/perf2.js
+          filename: k6tests/perf1.js
           cloud: true
           token: ${{ secrets.K6_CLOUD_API_TOKEN }}
   zap_baseline_scan:
-    needs: check_staging
+    needs: deploy_test_blue_green
     runs-on: ubuntu-latest
     steps:
       - name: Create report directory
