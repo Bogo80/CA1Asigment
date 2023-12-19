@@ -21,7 +21,7 @@ permissions:
   actions: read
   
 jobs:
-  Build and Test:                                            # "build" job
+  Build_and_Test:                                            # "build" job
     runs-on: ubuntu-latest                                   # runner
     steps:
     - uses: actions/checkout@v3
