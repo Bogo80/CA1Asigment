@@ -54,7 +54,7 @@ jobs:
     runs-on: windows-latest
     environment:
       name: staging
-      url: htpps://mybpcalcualator-staging.azurewebsites.net
+      url: https://mybpcalcualator-staging.azurewebsites.net
     steps:
       - uses: actions/checkout@v4
       - name: Publish web app
