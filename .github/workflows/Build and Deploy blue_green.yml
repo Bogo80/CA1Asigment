@@ -61,7 +61,7 @@ jobs:
     name: deploy to staging slot, run E2E tests, swap slots
     needs: Build_and_Test
     environment:
-      name: QA
+      name: staging
       url: htps://mybpcalcualator-staging.azurewebsites.net                                 
     runs-on: windows-latest
     
@@ -88,8 +88,7 @@ jobs:
     #- uses: actions/upload-artifact@v3
     # with:
     #    name: Selenium Tests Results
-     #   path: TestResults/selenium.trx
-
+    #   path: TestResults/selenium.trx
     # login to Azure account
     - uses: azure/login@v1
       with:
