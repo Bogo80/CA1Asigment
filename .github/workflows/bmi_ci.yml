@@ -6,10 +6,11 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 on:
-# workflow_dispatch:        
-  push:                                             #  workflow_dispatch for manually triggered
-   branches: [ master ]
- 
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ] 
+     
 permissions:
   id-token: write
   contents: read
