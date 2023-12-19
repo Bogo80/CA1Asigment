@@ -79,17 +79,6 @@ jobs:
         publish-profile: ${{ secrets.STAGING_AZURE_WEBAPP_PUBLISH_PROFILE }}     # Define secret variable in environment
         slot-name: staging
         package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
-
-    # Run Selenium tests
-    #- name: Run Selenium tests
-    # run: dotnet test ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp/SeleniumTest.dll /Settings:SeleniumTest.runsettings --logger:"trx;LogFileName=selenium.trx"
-  
-    # Upload results of selenium tests
-    #- uses: actions/upload-artifact@v3
-    # with:
-    #    name: Selenium Tests Results
-    #   path: TestResults/selenium.trx
-    # login to Azure account
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}                         # JSON objects which represents service principal
@@ -97,7 +86,7 @@ jobs:
     # blue/green
     - name: swap staging and production slots
       run: 
-        az webapp deployment slot swap -n gc-bmicalculator-ga -g gcresourcegroup1 --slot staging --target-slot production 
+        az webapp deployment slot swap -n myBPcalcualator -g MyResource --slot staging --target-slot production 
 
  # swap slots  
  #az webapp deployment slot swap -n gc-bmicalculator-ga -g gcresourcegroup1 --slot staging --target-slot production
