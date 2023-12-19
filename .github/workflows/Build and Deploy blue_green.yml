@@ -62,7 +62,7 @@ jobs:
     needs: Build_and_Test
     environment:
       name: staging
-      url: htps://mybpcalcualator-staging.azurewebsites.net                                 
+      url: htpps://mybpcalcualator-staging.azurewebsites.net                                 
     runs-on: windows-latest
     
     steps:
