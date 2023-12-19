@@ -81,13 +81,13 @@ jobs:
           filename: k6tests/perf1.js
           cloud: true
           token: ${{ secrets.K6_CLOUD_API_TOKEN }}
-swap_slots:
-  needs: k6_performance_test
-  runs-on: ubuntu-latest
-  environment:
+  swap_slots:
+   needs: k6_performance_test
+   runs-on: ubuntu-latest
+   environment:
     name: production
     url: https://mybpcalcualator.azurewebsites.net
-  steps:
+   steps:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
