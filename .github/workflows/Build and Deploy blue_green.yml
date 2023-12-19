@@ -58,7 +58,7 @@ jobs:
   
   deploy_test_blue_green:                                             
     name: deploy to staging slot, run E2E tests, swap slots
-    needs: build_unit_test
+    needs: Build_and_Test
     environment:
       name: QA
       url: htps://mybpcalcualator-staging.azurewebsites.net                                 
