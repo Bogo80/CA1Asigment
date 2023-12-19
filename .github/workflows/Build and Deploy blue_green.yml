@@ -3,33 +3,58 @@
 
 name: Build_Test_Deploy_Blue/Green
 env:
-  AZURE_WEBAPP_NAME: myBPcalcualator             # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'publish'           # set this to the path to your web app project
+  AZURE_WEBAPP_NAME: myBPcalcualator            # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: 'publish'              # set this to the path to your web app project
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 on:
-  workflow_dispatch:                                # manually triggered
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ] 
 
+permissions:
+  id-token: write
+  contents: read
+  checks: write
+  actions: read
+  
 jobs:
-  build_unit_test:                                       
-    name: build and unit test
-    runs-on: windows-latest
+  Build and Test:                                            # "build" job
+    runs-on: ubuntu-latest                                   # runner
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
     - name: Build for Release
       run: dotnet build --configuration Release
-
-    - name: Unit tests
-      run: dotnet test BP_UnitTest/BP_UnitTest.csproj --collect "Code coverage" 
-      name: Publishing Unit Test Results
+    - name: Run unit tests
+      run: dotnet test BP_UnitTest/BP_UnitTest.csproj --no-restore --collect "Code coverage" -l:trx   
+    - name: Publish Unit Test Results
       uses: dorny/test-reporter@v1
       with:
         artifact: ''
         name: MS Tests                  
         path: '**.trx'
-        reporter: 'dotnet-trx'
+        reporter: 'dotnet-trx'                  
     # run Specflow+ tests
     - name: Run Acceptance Tests 
-      run: dotnet test BBDDtesting/BDDtesting.csproj  --verbosity normal -l:trx
+      run: dotnet test BDDtesting/BDDtesting.csproj  --verbosity normal -l:trx
+    - name: Run Sonar Test 
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: 
+        args: >
+          -Dsonar.organization=bogo80
+          -Dsonar.projectKey=Bogo80_CA1Asigment
+          -Dsonar.python.coverage.reportPaths=coverage.xml
   
   deploy_test_blue_green:                                             
     name: deploy to staging slot, run E2E tests, swap slots
